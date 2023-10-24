@@ -10,10 +10,10 @@ if 'tokenizer' not in st.session_state:
 if 'model' not in st.session_state:
     from transformers import pipeline, set_seed
     from transformers import GPT2LMHeadModel
-    st.session_state['model'] = GPT2LMHeadModel.from_pretrained(r'''F:\files\ML\PhrasePrediction\models\all_scripts''')
+    st.session_state['model'] = GPT2LMHeadModel.from_pretrained(r'''models\all_scripts''')
     st.session_state['generator'] = pipeline('text-generation', model=st.session_state['model'], tokenizer=st.session_state['tokenizer'], device=st.session_state['model'].device)
 if 'al' not in st.session_state:
-    st.session_state['al'] = pd.read_csv(r'F:\files\ML\PhrasePrediction\STscripts\all_lines')
+    st.session_state['al'] = pd.read_csv(r'STscripts\all_lines')
 
 def gen(generator,inp,max_length):
     st.session_state['output'] = generator(inp, max_length=max_length, num_return_sequences=1)[0]['generated_text']
