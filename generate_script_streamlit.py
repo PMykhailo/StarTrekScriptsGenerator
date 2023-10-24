@@ -20,12 +20,12 @@ if 'al' not in st.session_state:
 #     st.session_state['output'] = generator(inp, max_length=max_length, num_return_sequences=1)[0]['generated_text']
 
 #set_seed(42)
-
+random_line = st.button('Start with random line from scripts database')
 if random_line:
     st.session_state['input_val'] = st.session_state['al'].sample(n=1)['0'].item()
 else:
     st.session_state['input_val'] = '''PICARD: You will agree, Data, that Starfleet's orders are difficult?'''
-random_line = st.button('Start with random line from scripts database')
+
 with st.form(key = 'parametres'):
     input = st.text_input('Enter your own starting line here',value=st.session_state['input_val'])
     max_length = st.number_input("Number of tokens to generate", 10, 1250, value=250)
