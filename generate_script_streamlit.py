@@ -15,16 +15,19 @@ if 'model' not in st.session_state:
     st.session_state['generator'] = pipeline('text-generation', model=st.session_state['model'], tokenizer=st.session_state['tokenizer'], device=st.session_state['model'].device)
 if 'al' not in st.session_state:
     st.session_state['al'] = pd.read_csv(f'{dirname(__file__)}/STscripts/all_lines')
-
+if 'input_val' not in st.session_state:
+    st.session_state['input_val'] = '''PICARD: You will agree, Data, that Starfleet's orders are difficult?'''
 # def gen(generator,inp,max_length):
 #     st.session_state['output'] = generator(inp, max_length=max_length, num_return_sequences=1)[0]['generated_text']
 
-#set_seed(42)
-random_line = st.button('Start with random line from scripts database')
-if random_line:
+def random_val():
     st.session_state['input_val'] = st.session_state['al'].sample(n=1)['0'].item()
-else:
-    st.session_state['input_val'] = '''PICARD: You will agree, Data, that Starfleet's orders are difficult?'''
+
+#set_seed(42)
+
+random_line = st.button('Start with random line from scripts database', on_click=random_val)
+
+
 
 with st.form(key = 'parametres'):
     input = st.text_input('Enter your own starting line here',value=st.session_state['input_val'])
