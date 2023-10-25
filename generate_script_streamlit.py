@@ -31,7 +31,7 @@ random_line = st.button('Start with random line from scripts database', on_click
 
 with st.form(key = 'parametres'):
     input = st.text_input('Enter your own starting line here',value=st.session_state['input_val'])
-    max_length = st.number_input("Number of tokens to generate", 10, 1250, value=250)
+    max_length = st.number_input("Number of tokens to generate", 10, 1024, value=250)
     gen = st.form_submit_button('Generate')#, on_click=gen, args=(st.session_state['generator'], input, max_length))
 #start = st.button('Generate')
 #if 'output' in st.session_state:
