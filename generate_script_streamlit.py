@@ -1,18 +1,17 @@
 import streamlit as st
 import pandas as pd
 from os.path import dirname
+from transformers import pipeline, set_seed
+from transformers import GPT2LMHeadModel
+from transformers import GPT2Tokenizer
 
 st.title('This is GPT-2 model fine-tuned with Star Trek scipts')
 st.markdown('''Write a line for  model to begin  with and it will try it's best to continue it as Star Trek script. Please write caracter name in CAPS.''')
 
-if 'tokenizer' not in st.session_state:
-    from transformers import GPT2Tokenizer
-    st.session_state['tokenizer'] = GPT2Tokenizer.from_pretrained('gpt2')
-if 'model' not in st.session_state:
-    from transformers import pipeline, set_seed
-    from transformers import GPT2LMHeadModel
-    st.session_state['model'] = GPT2LMHeadModel.from_pretrained(f'''{dirname(__file__)}/models/all_scripts''')
-    st.session_state['generator'] = pipeline('text-generation', model=st.session_state['model'], tokenizer=st.session_state['tokenizer'], device=st.session_state['model'].device)
+tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+model = GPT2LMHeadModel.from_pretrained(f'''{dirname(__file__)}/models/all_scripts''')
+generator = pipeline('text-generation', model=model, tokenizer=tokenizer, device=model.device)
+
 if 'al' not in st.session_state:
     st.session_state['al'] = pd.read_csv(f'{dirname(__file__)}/STscripts/all_lines')
 if 'input_val' not in st.session_state:
@@ -32,7 +31,7 @@ random_line = st.button('Start with random line from scripts database', on_click
 with st.form(key = 'parametres'):
     input = st.text_input('Enter your own starting line here',value=st.session_state['input_val'])
     max_length = st.number_input("Number of tokens to generate", 10, 1024, value=250)
-    gen = st.form_submit_button('Generate')#, on_click=gen, args=(st.session_state['generator'], input, max_length))
+    gen = st.form_submit_button('Generate')#, on_click=gen, args=(generator, input, max_length))
 #start = st.button('Generate')
 #if 'output' in st.session_state:
-st.text(st.session_state['generator'](input, max_length=max_length, num_return_sequences=1)[0]['generated_text'])
+st.text(generator(input, max_length=max_length, num_return_sequences=1)[0]['generated_text'])
