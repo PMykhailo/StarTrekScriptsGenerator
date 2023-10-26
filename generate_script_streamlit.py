@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from os.path import dirname
-from transformers import pipeline, set_seed
+from transformers import pipeline
 from transformers import GPT2LMHeadModel
 from transformers import GPT2Tokenizer
 
@@ -16,13 +16,9 @@ if 'al' not in st.session_state:
     st.session_state['al'] = pd.read_csv(f'{dirname(__file__)}/STscripts/all_lines')
 if 'input_val' not in st.session_state:
     st.session_state['input_val'] = '''PICARD: You will agree, Data, that Starfleet's orders are difficult?'''
-# def gen(generator,inp,max_length):
-#     st.session_state['output'] = generator(inp, max_length=max_length, num_return_sequences=1)[0]['generated_text']
 
 def random_val():
     st.session_state['input_val'] = st.session_state['al'].sample(n=1)['0'].item()
-
-#set_seed(42)
 
 random_line = st.button('Start with random line from scripts database', on_click=random_val)
 
@@ -31,7 +27,6 @@ random_line = st.button('Start with random line from scripts database', on_click
 with st.form(key = 'parametres'):
     input = st.text_input('Enter your own starting line here',value=st.session_state['input_val'])
     max_length = st.number_input("Number of tokens to generate", 10, 1024, value=250)
-    gen = st.form_submit_button('Generate')#, on_click=gen, args=(generator, input, max_length))
-#start = st.button('Generate')
-#if 'output' in st.session_state:
+    gen = st.form_submit_button('Generate')
+
 st.text(generator(input, max_length=max_length, num_return_sequences=1)[0]['generated_text'])
