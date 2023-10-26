@@ -43,4 +43,5 @@ with st.form(key = 'parametres'):
     max_length = st.number_input("Number of tokens to generate", 10, 1024, value=250)
     gen = st.form_submit_button('Generate')
 
-st.text(generator(input, max_length=max_length, num_return_sequences=1)[0]['generated_text'])
+
+if gen: st.text(generator(input, max_length=max_length, num_return_sequences=1)[0]['generated_text'])
