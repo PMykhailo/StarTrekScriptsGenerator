@@ -1,4 +1,4 @@
 streamlit
 pandas
-pytorch
+pytorch==2.0.1
 transformers
